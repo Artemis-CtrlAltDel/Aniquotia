@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">Cmo</string>
+    <string name="frag_signup_title">Sign up</string>
+    <string name="frag_signup_cta">Sign up</string>
+    <string name="frag_signin_title">Login</string>
+    <string name="frag_signin_cta">Login</string>
+
+    <string name="frag_auth_username_hint">Username</string>
+    <string name="frag_auth_email_hint">Email</string>
+    <string name="frag_auth_password_hint">Password</string>
+
+    <string name="frag_alreadymember">Already a member ?</string>
+    <string name="frag_notamember">Not a member ?</string>
+    <string name="frag_rememberme">Remember me</string>
+</resources>
