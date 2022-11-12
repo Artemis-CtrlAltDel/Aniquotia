@@ -24,7 +24,7 @@
                 android:layout_height="wrap_content"
                 android:text="anime"
                 android:textStyle="bold"
-                android:textSize="@dimen/_17sdp"
+                android:textSize="@dimen/_16sdp"
                 android:textColor="?attr/colorOnSurface"
                 />
 
@@ -55,7 +55,6 @@
                 android:id="@+id/character"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="?attr/colorOnSurface"
                 android:textSize="@dimen/_14sdp"
                 android:text="character"
                 android:gravity="end|center"
