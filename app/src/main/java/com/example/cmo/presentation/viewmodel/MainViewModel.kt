@@ -63,31 +63,31 @@ class MainViewModel @Inject constructor(private val api: AnimeQuotesApiService) 
     }
 
     // 1 random quote :
-    fun getRandomQuote(){
+    fun getRandomQuote() {
         val observable =
             api.getRandomQuote()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({result -> _animeRandomQuote.value = result})
-                {error -> Log.e(TAG, "getRandomQuote: ${error.message}")}
+                .subscribe({ result -> _animeRandomQuote.value = result })
+                { error -> Log.e(TAG, "getRandomQuote: ${error.message}") }
     }
 
-    fun getRandomQuoteByCharacter(character: String){
+    fun getRandomQuoteByCharacter(character: String) {
         val observable =
             api.getRandomQuoteByCharacter(character)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({result -> _animeRandomQuote.value = result})
-                {error -> Log.e(TAG, "getRandomQuote: ${error.message}")}
+                .subscribe({ result -> _animeRandomQuote.value = result })
+                { error -> Log.e(TAG, "getRandomQuote: ${error.message}") }
     }
 
-    fun getRandomQuoteByAnime(anime: String){
+    fun getRandomQuoteByAnime(anime: String) {
         val observable =
             api.getRandomQuoteByAnime(anime)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({result -> _animeRandomQuote.value = result})
-                {error -> Log.e(TAG, "getRandomQuote: ${error.message}")}
+                .subscribe({ result -> _animeRandomQuote.value = result })
+                { error -> Log.e(TAG, "getRandomQuote: ${error.message}") }
     }
 
     override fun onCleared() {

@@ -13,5 +13,8 @@
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
         <item name="colorOnSurface">@color/white</item>
+
+        <item name="colorContainer">@color/c_card_night_background</item>
+        <item name="colorOnContainer">@color/c_card_night_foreground</item>
     </style>
 </resources>
