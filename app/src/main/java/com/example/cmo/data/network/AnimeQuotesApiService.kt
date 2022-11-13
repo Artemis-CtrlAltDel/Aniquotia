@@ -27,12 +27,12 @@ interface AnimeQuotesApiService {
     @GET("random")
     fun getRandomQuote(): Observable<AnimeQuoteApiResponse>
 
-    @GET("quotes/character")
+    @GET("random/character")
     fun getRandomQuoteByCharacter(
         @Query("name") name: String
     ): Observable<AnimeQuoteApiResponse>
 
-    @GET("quotes/anime")
+    @GET("random/anime")
     fun getRandomQuoteByAnime(
         @Query("title") title: String
     ): Observable<AnimeQuoteApiResponse>

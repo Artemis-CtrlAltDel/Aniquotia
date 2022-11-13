@@ -17,7 +17,7 @@
     <color name="c_card_light_background">#26A4B0BE</color>
     <color name="c_card_light_foreground">#FFFFFF</color>
 
-    <color name="c_card_night_background">#151515</color>
+    <color name="c_card_night_background">#171717</color>
     <color name="c_card_night_foreground">#101010</color>
 
 </resources>
