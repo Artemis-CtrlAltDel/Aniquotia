@@ -32,7 +32,7 @@ class MainActivity : AppCompatActivity() {
         viewModel = ViewModelProvider(this@MainActivity)[MainViewModel::class.java]
 
         viewModel.getQuotes()
-        viewModel.animeQuotesList.observeForever {
+        viewModel.animeQuotesList.observe(this) {
             it?.let { adapter.setData(it) }
         }
 
