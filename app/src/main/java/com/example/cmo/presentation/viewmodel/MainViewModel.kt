@@ -4,8 +4,8 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.cmo.data.network.AnimeQuotesApiService
-import com.example.cmo.data.network.pojo.AnimeQuoteApiResponse
+import com.example.cmo.data.network.AnimeQuotesApi
+import com.example.cmo.data.network.AnimeQuotesApiDto
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
@@ -13,20 +13,20 @@ import io.reactivex.rxjava3.schedulers.Schedulers
 import javax.inject.Inject
 
 @HiltViewModel
-class MainViewModel @Inject constructor(private val api: AnimeQuotesApiService) : ViewModel() {
+class MainViewModel @Inject constructor(private val api: AnimeQuotesApi) : ViewModel() {
 
     private val TAG = "MainViewModel"
 
     private val compositeDisposable = CompositeDisposable()
 
-    private val _animeQuotesList: MutableLiveData<ArrayList<AnimeQuoteApiResponse>> =
+    private val _animeQuotesList: MutableLiveData<ArrayList<AnimeQuotesApiDto>> =
         MutableLiveData(
             arrayListOf()
         )
-    val animeQuotesList: LiveData<ArrayList<AnimeQuoteApiResponse>> get() = _animeQuotesList
+    val animeQuotesList: LiveData<ArrayList<AnimeQuotesApiDto>> get() = _animeQuotesList
 
-    private val _animeRandomQuote: MutableLiveData<AnimeQuoteApiResponse> = MutableLiveData(null)
-    val animeRandomQuote: LiveData<AnimeQuoteApiResponse> get() = _animeRandomQuote
+    private val _animeRandomQuote: MutableLiveData<AnimeQuotesApiDto> = MutableLiveData(null)
+    val animeRandomQuote: LiveData<AnimeQuotesApiDto> get() = _animeRandomQuote
 
     // 10 random quotes :
     fun getQuotes() {

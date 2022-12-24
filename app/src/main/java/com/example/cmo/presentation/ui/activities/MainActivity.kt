@@ -1,4 +1,4 @@
-package com.example.cmo.presentation.activities
+package com.example.cmo.presentation.ui.activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -7,7 +7,7 @@ import android.view.WindowManager
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.cmo.databinding.ActivityMainBinding
-import com.example.cmo.presentation.adapters.MainAdapter
+import com.example.cmo.presentation.ui.adapters.MainAdapter
 import com.example.cmo.presentation.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -31,13 +31,15 @@ class MainActivity : AppCompatActivity() {
 
         viewModel = ViewModelProvider(this@MainActivity)[MainViewModel::class.java]
 
-        viewModel.getQuotes()
-        viewModel.animeQuotesList.observe(this) {
-            it?.let { adapter.setData(it) }
-        }
+        getData()
 
         binding = ActivityMainBinding.inflate(layoutInflater)
-        binding.apply {
+        with(binding) {
+
+            swipe.setOnRefreshListener {
+                getData()
+                swipe.isRefreshing = false
+            }
 
             recycler.adapter = adapter
             recycler.setHasFixedSize(true)
@@ -45,6 +47,13 @@ class MainActivity : AppCompatActivity() {
                 LinearLayoutManager(applicationContext, LinearLayoutManager.VERTICAL, false)
 
             setContentView(root)
+        }
+    }
+
+    private fun getData(){
+        viewModel.getQuotes()
+        viewModel.animeQuotesList.observe(this) {
+            it?.let { adapter.setData(it) }
         }
     }
 }

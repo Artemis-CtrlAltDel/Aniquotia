@@ -1,7 +1,7 @@
-package com.example.cmo
+package com.example.cmo.di
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp
 
 @HiltAndroidApp
-class BaseApplication: Application()
+class App: Application()
