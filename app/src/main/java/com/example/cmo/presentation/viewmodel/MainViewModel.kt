@@ -1,11 +1,10 @@
 package com.example.cmo.presentation.viewmodel
 
 import android.util.Log
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.cmo.data.network.AnimeQuotesApi
-import com.example.cmo.data.network.AnimeQuotesApiDto
+import com.example.cmo.data.local.pojo.AnimeQuote
+import com.example.cmo.data.repository.Repository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
@@ -13,25 +12,26 @@ import io.reactivex.rxjava3.schedulers.Schedulers
 import javax.inject.Inject
 
 @HiltViewModel
-class MainViewModel @Inject constructor(private val api: AnimeQuotesApi) : ViewModel() {
+class MainViewModel @Inject constructor(private val repository: Repository) : ViewModel() {
 
     private val TAG = "MainViewModel"
 
     private val compositeDisposable = CompositeDisposable()
 
-    private val _animeQuotesList: MutableLiveData<ArrayList<AnimeQuotesApiDto>> =
-        MutableLiveData(
-            arrayListOf()
-        )
-    val animeQuotesList: LiveData<ArrayList<AnimeQuotesApiDto>> get() = _animeQuotesList
+    /** API **/
+    private val _animeQuotesList =
+        MutableLiveData(arrayListOf<AnimeQuote>())
+    val animeQuotesList get() = _animeQuotesList
 
-    private val _animeRandomQuote: MutableLiveData<AnimeQuotesApiDto> = MutableLiveData(null)
-    val animeRandomQuote: LiveData<AnimeQuotesApiDto> get() = _animeRandomQuote
+    private val _animeRandomQuote: MutableLiveData<AnimeQuote> =
+        MutableLiveData(null)
+    val animeRandomQuote get() = _animeRandomQuote
+
 
     // 10 random quotes :
     fun getQuotes() {
         val observable =
-            api.getQuotes()
+            repository.getQuotes()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ result -> _animeQuotesList.value = result })
@@ -42,7 +42,7 @@ class MainViewModel @Inject constructor(private val api: AnimeQuotesApi) : ViewM
 
     fun getQuotesByCharacter(character: String) {
         val observable =
-            api.getQuotesByCharacter(character)
+            repository.getQuotesByCharacter(character)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ result -> _animeQuotesList.value = result })
@@ -53,7 +53,7 @@ class MainViewModel @Inject constructor(private val api: AnimeQuotesApi) : ViewM
 
     fun getQuotesByAnime(anime: String) {
         val observable =
-            api.getQuotesByCharacter(anime)
+            repository.getQuotesByCharacter(anime)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ result -> _animeQuotesList.value = result })
@@ -65,7 +65,7 @@ class MainViewModel @Inject constructor(private val api: AnimeQuotesApi) : ViewM
     // 1 random quote :
     fun getRandomQuote() {
         val observable =
-            api.getRandomQuote()
+            repository.getRandomQuote()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ result -> _animeRandomQuote.value = result })
@@ -74,7 +74,7 @@ class MainViewModel @Inject constructor(private val api: AnimeQuotesApi) : ViewM
 
     fun getRandomQuoteByCharacter(character: String) {
         val observable =
-            api.getRandomQuoteByCharacter(character)
+            repository.getRandomQuoteByCharacter(character)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ result -> _animeRandomQuote.value = result })
@@ -83,12 +83,28 @@ class MainViewModel @Inject constructor(private val api: AnimeQuotesApi) : ViewM
 
     fun getRandomQuoteByAnime(anime: String) {
         val observable =
-            api.getRandomQuoteByAnime(anime)
+            repository.getRandomQuoteByAnime(anime)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ result -> _animeRandomQuote.value = result })
                 { error -> Log.e(TAG, "getRandomQuote: ${error.message}") }
     }
+
+    /** Database **/
+    private val _animeSavedQuotesList =
+        MutableLiveData(listOf<AnimeQuote>())
+    val animeSavedQuotesList get() = _animeSavedQuotesList
+
+    fun insertQuote(quote: AnimeQuote) =
+        repository.insertQuote(quote)
+
+    fun deleteQuote(quote: AnimeQuote) =
+        repository.deleteQuote(quote)
+
+    fun getSavedQuotes() {
+        _animeSavedQuotesList.value = repository.getSavedQuotes().value
+    }
+
 
     override fun onCleared() {
         super.onCleared()

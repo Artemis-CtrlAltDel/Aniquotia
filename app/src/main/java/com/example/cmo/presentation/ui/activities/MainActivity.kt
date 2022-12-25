@@ -7,7 +7,9 @@ import android.view.WindowManager
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.cmo.databinding.ActivityMainBinding
+import com.example.cmo.other.bookmarkQuote
 import com.example.cmo.presentation.ui.adapters.MainAdapter
+import com.example.cmo.presentation.ui.adapters.OnItemClick
 import com.example.cmo.presentation.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -17,7 +19,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var viewModel: MainViewModel
     private lateinit var binding: ActivityMainBinding
 
-    private val adapter = MainAdapter(arrayListOf())
+    private lateinit var adapter: MainAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,6 +34,16 @@ class MainActivity : AppCompatActivity() {
         viewModel = ViewModelProvider(this@MainActivity)[MainViewModel::class.java]
 
         getData()
+
+        adapter = MainAdapter(
+            items = arrayListOf(),
+            onItemClick = object: OnItemClick {
+                override fun onBookmarkClick(position: Int) {
+                    bookmarkQuote(adapter.itemAt(position), viewModel)
+                }
+
+            }
+        )
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         with(binding) {

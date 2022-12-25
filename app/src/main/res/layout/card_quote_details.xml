@@ -20,14 +20,44 @@
             android:paddingHorizontal="15dp"
             android:paddingVertical="20dp">
 
-            <TextView
-                android:id="@+id/anime"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="anime"
-                android:textColor="?attr/colorOnSurface"
-                android:textSize="@dimen/_16sdp"
-                android:textStyle="bold" />
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+                <TextView
+                    android:id="@+id/anime"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="anime sssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss"
+                    android:textColor="?attr/colorOnSurface"
+                    android:textSize="@dimen/_16sdp"
+                    android:textStyle="bold"
+                    android:gravity="start|center_vertical"
+                    android:layout_marginEnd="5dp"
+                    />
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/bookmark"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:cardElevation="0dp"
+                    app:cardCornerRadius="@dimen/_20sdp"
+                    android:backgroundTint="?attr/colorPrimarySurface"
+                    >
+                    <ImageView
+                        android:id="@+id/bookmark_icon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_bookmark_inactive"
+                        android:padding="6dp"
+                        app:tint="?attr/colorPrimary"
+                        android:scaleType="centerCrop"
+                        android:scaleX=".9"
+                        android:scaleY=".9"
+                        />
+                </androidx.cardview.widget.CardView>
+            </LinearLayout>
 
             <Space
                 android:layout_width="match_parent"
