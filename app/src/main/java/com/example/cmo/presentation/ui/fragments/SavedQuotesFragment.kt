@@ -32,9 +32,6 @@ class SavedQuotesFragment : Fragment() {
 
         _binding = FragmentSavedQuotesBinding.inflate(inflater, container, false)
 
-        viewModel = ViewModelProvider(requireActivity())[MainViewModel::class.java]
-        getData()
-
         adapter = MainAdapter(
             items = arrayListOf(),
             onItemClick = object: OnItemClick {
@@ -43,6 +40,9 @@ class SavedQuotesFragment : Fragment() {
                 }
             }
         )
+
+        viewModel = ViewModelProvider(requireActivity())[MainViewModel::class.java]
+        getData()
 
         binding.swipe.setOnRefreshListener {
             getData()

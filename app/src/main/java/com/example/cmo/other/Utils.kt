@@ -2,7 +2,6 @@ package com.example.cmo.other
 
 import androidx.fragment.app.Fragment
 import com.example.cmo.data.local.pojo.AnimeQuote
-import com.example.cmo.data.network.dto.AnimeQuoteApiDto
 import com.example.cmo.presentation.viewmodel.MainViewModel
 
 fun bookmarkQuote(quote: AnimeQuote, viewModel: MainViewModel){

@@ -31,9 +31,6 @@ class RemoteQuotesFragment : Fragment() {
 
         _binding = FragmentRemoteQuotesBinding.inflate(inflater, container, false)
 
-        viewModel = ViewModelProvider(requireActivity())[MainViewModel::class.java]
-        getData()
-
         adapter = MainAdapter(
             items = arrayListOf(),
             onItemClick = object: OnItemClick {
@@ -42,6 +39,9 @@ class RemoteQuotesFragment : Fragment() {
                 }
             }
         )
+
+        viewModel = ViewModelProvider(requireActivity())[MainViewModel::class.java]
+        getData()
 
         binding.swipe.setOnRefreshListener {
             getData()
