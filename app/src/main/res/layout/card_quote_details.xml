@@ -30,7 +30,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="anime sssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss"
+                    android:text="anime"
                     android:textColor="?attr/colorOnSurface"
                     android:textSize="@dimen/_16sdp"
                     android:textStyle="bold"

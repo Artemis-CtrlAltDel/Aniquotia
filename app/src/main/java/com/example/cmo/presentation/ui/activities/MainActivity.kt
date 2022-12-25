@@ -4,22 +4,24 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Window
 import android.view.WindowManager
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.cmo.R
 import com.example.cmo.databinding.ActivityMainBinding
 import com.example.cmo.other.bookmarkQuote
+import com.example.cmo.other.replaceFragment
 import com.example.cmo.presentation.ui.adapters.MainAdapter
 import com.example.cmo.presentation.ui.adapters.OnItemClick
+import com.example.cmo.presentation.ui.fragments.RemoteQuotesFragment
+import com.example.cmo.presentation.ui.fragments.SavedQuotesFragment
 import com.example.cmo.presentation.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var viewModel: MainViewModel
     private lateinit var binding: ActivityMainBinding
-
-    private lateinit var adapter: MainAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,41 +33,24 @@ class MainActivity : AppCompatActivity() {
         )
         supportActionBar?.hide()
 
-        viewModel = ViewModelProvider(this@MainActivity)[MainViewModel::class.java]
-
-        getData()
-
-        adapter = MainAdapter(
-            items = arrayListOf(),
-            onItemClick = object: OnItemClick {
-                override fun onBookmarkClick(position: Int) {
-                    bookmarkQuote(adapter.itemAt(position), viewModel)
-                }
-
-            }
-        )
+        replaceFragment(RemoteQuotesFragment())
 
         binding = ActivityMainBinding.inflate(layoutInflater)
-        with(binding) {
 
-            swipe.setOnRefreshListener {
-                getData()
-                swipe.isRefreshing = false
+        binding.bottomNavigation.setOnItemSelectedListener {
+            when (it.itemId){
+                R.id.menu_remote -> replaceFragment(RemoteQuotesFragment())
+                R.id.menu_bookmark -> replaceFragment(SavedQuotesFragment())
             }
-
-            recycler.adapter = adapter
-            recycler.setHasFixedSize(true)
-            recycler.layoutManager =
-                LinearLayoutManager(applicationContext, LinearLayoutManager.VERTICAL, false)
-
-            setContentView(root)
+            true
         }
+
+        setContentView(binding.root)
     }
 
-    private fun getData(){
-        viewModel.getQuotes()
-        viewModel.animeQuotesList.observe(this) {
-            it?.let { adapter.setData(it) }
-        }
+    private fun replaceFragment(fragment: Fragment) {
+        val transaction = supportFragmentManager.beginTransaction()
+        transaction.replace(R.id.frame, fragment)
+        transaction.commit()
     }
 }

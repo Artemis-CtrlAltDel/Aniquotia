@@ -33,46 +33,31 @@
 <!--        </com.google.android.material.appbar.CollapsingToolbarLayout>-->
 <!--    </com.google.android.material.appbar.AppBarLayout>-->
 
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/swipe"
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        tools:context=".presentation.activities.MainActivity">
 
-        <androidx.core.widget.NestedScrollView
-            android:background="?attr/colorContainer"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:paddingHorizontal="15dp"
-            >
+            android:orientation="vertical">
 
-            <LinearLayout
+            <FrameLayout
+                android:id="@+id/frame"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                />
+
+            <com.google.android.material.bottomnavigation.BottomNavigationView
+                android:id="@+id/bottom_navigation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:paddingTop="60dp"
-                >
+                app:menu="@menu/menu_bottom_navigation" />
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/app_title"
-                    android:gravity="start|center"
-                    android:textSize="@dimen/_25sdp"
-                    android:textStyle="bold"
-                    android:textColor="?attr/colorOnSurface"
-                    />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recycler"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    />
-
-            </LinearLayout>
-        </androidx.core.widget.NestedScrollView>
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-
+        </LinearLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

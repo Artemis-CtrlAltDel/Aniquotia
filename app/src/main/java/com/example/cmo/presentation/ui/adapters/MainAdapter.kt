@@ -48,6 +48,7 @@ class MainAdapter(
 
             binding.bookmark.setOnClickListener {
                 onItemClick.onBookmarkClick(position)
+                notifyDataSetChanged()
             }
         }
     }
