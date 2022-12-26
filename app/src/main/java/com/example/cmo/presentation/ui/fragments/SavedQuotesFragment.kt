@@ -1,10 +1,12 @@
 package com.example.cmo.presentation.ui.fragments
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.cmo.R
@@ -28,7 +30,7 @@ class SavedQuotesFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         _binding = FragmentSavedQuotesBinding.inflate(inflater, container, false)
 
@@ -52,7 +54,7 @@ class SavedQuotesFragment : Fragment() {
         binding.recycler.adapter = adapter
         binding.recycler.setHasFixedSize(true)
         binding.recycler.layoutManager =
-            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, true)
 
         return binding.root
     }

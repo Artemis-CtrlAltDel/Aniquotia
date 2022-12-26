@@ -9,7 +9,7 @@ import com.example.cmo.data.local.AnimeQuoteDao
 
 @Database(
     entities = [Anime::class, AnimeQuote::class],
-    version = 2,
+    version = 1,
     exportSchema = false
 )
 @TypeConverters(Converters::class)

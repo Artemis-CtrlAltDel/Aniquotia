@@ -1,6 +1,7 @@
 package com.example.cmo.presentation.viewmodel
 
 import android.util.Log
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.cmo.data.local.pojo.AnimeQuote
@@ -91,8 +92,8 @@ class MainViewModel @Inject constructor(private val repository: Repository) : Vi
     }
 
     /** Database **/
-    private val _animeSavedQuotesList =
-        MutableLiveData(listOf<AnimeQuote>())
+    private var _animeSavedQuotesList: LiveData<List<AnimeQuote>> =
+        MutableLiveData(listOf())
     val animeSavedQuotesList get() = _animeSavedQuotesList
 
     fun insertQuote(quote: AnimeQuote) =
@@ -102,7 +103,7 @@ class MainViewModel @Inject constructor(private val repository: Repository) : Vi
         repository.deleteQuote(quote)
 
     fun getSavedQuotes() {
-        _animeSavedQuotesList.value = repository.getSavedQuotes().value
+        _animeSavedQuotesList = repository.getSavedQuotes()
     }
 
 
