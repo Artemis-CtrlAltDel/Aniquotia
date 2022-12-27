@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.cmo.data.local.pojo.AnimeQuote
 import com.example.cmo.data.repository.Repository
+import com.example.cmo.other.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
@@ -20,8 +21,8 @@ class MainViewModel @Inject constructor(private val repository: Repository) : Vi
     private val compositeDisposable = CompositeDisposable()
 
     /** API **/
-    private val _animeQuotesList =
-        MutableLiveData(arrayListOf<AnimeQuote>())
+    private val _animeQuotesList: MutableLiveData<Resource<ArrayList<AnimeQuote>>> =
+        MutableLiveData(Resource.Loading(arrayListOf()))
     val animeQuotesList get() = _animeQuotesList
 
     private val _animeRandomQuote: MutableLiveData<AnimeQuote> =

@@ -38,6 +38,25 @@
                     android:id="@+id/recycler"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    />
+
+                <ProgressBar
+                    android:layout_marginTop="@dimen/_20sdp"
+                    android:id="@+id/progress"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    />
+
+                <TextView
+                    android:layout_marginTop="@dimen/_20sdp"
+                    android:id="@+id/error"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="Something went wrong"
+                    android:gravity="center"
+                    android:visibility="gone"
                     />
 
             </LinearLayout>

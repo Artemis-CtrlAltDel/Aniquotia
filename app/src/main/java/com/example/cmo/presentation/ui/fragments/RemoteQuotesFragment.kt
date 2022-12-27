@@ -5,9 +5,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.cmo.databinding.FragmentRemoteQuotesBinding
+import com.example.cmo.other.Resource
 import com.example.cmo.other.bookmarkQuote
 import com.example.cmo.presentation.ui.adapters.MainAdapter
 import com.example.cmo.presentation.ui.adapters.OnItemClick
@@ -33,7 +35,7 @@ class RemoteQuotesFragment : Fragment() {
 
         adapter = MainAdapter(
             items = arrayListOf(),
-            onItemClick = object: OnItemClick {
+            onItemClick = object : OnItemClick {
                 override fun onBookmarkClick(position: Int) {
                     bookmarkQuote(adapter.itemAt(position), viewModel)
                 }
@@ -61,10 +63,28 @@ class RemoteQuotesFragment : Fragment() {
         _binding = null
     }
 
-    private fun getData(){
+    private fun getData() {
         viewModel.getQuotes()
         viewModel.animeQuotesList.observe(requireActivity()) {
-            it?.let { adapter.setData(it) }
+            binding.error.isVisible = false
+            with(binding){
+                when (it) {
+                    is Resource.Loading -> {
+                        progress.isVisible = true
+                        recycler.isVisible = false
+                    }
+                    is Resource.Success -> {
+                        progress.isVisible = false
+                        recycler.isVisible = true
+                        it.data?.let { adapter.setData(it) }
+                    }
+                    else -> {
+                        progress.isVisible = false
+                        recycler.isVisible = false
+                        error.isVisible = true
+                    }
+                }
+            }
         }
     }
 
