@@ -19,5 +19,6 @@
 
         <item name="colorPrimarySurface">@color/c_primary_bg</item>
         <item name="colorOnPrimarySurface">@color/c_primary</item>
+
     </style>
 </resources>

@@ -33,9 +33,10 @@ class MainActivity : AppCompatActivity() {
         )
         supportActionBar?.hide()
 
-        replaceFragment(RemoteQuotesFragment())
-
         binding = ActivityMainBinding.inflate(layoutInflater)
+
+        replaceFragment(RemoteQuotesFragment())
+        binding.bottomNavigation.selectedItemId = R.id.menu_remote
 
         binding.bottomNavigation.setOnItemSelectedListener {
             when (it.itemId){

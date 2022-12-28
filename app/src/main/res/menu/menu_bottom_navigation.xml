@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:title="Remote"
+    <item android:title="@string/app_menu_remote"
         android:icon="@drawable/ic_menu_remote"
         android:id="@+id/menu_remote"
         android:checked="true"
         />
-    <item android:title="Library"
+    <item android:title="@string/app_menu_search"
+        android:icon="@drawable/ic_menu_search"
+        android:id="@+id/menu_search"
+        />
+    <item android:title="@string/app_menu_saved"
         android:icon="@drawable/ic_menu_bookmark"
         android:id="@+id/menu_bookmark"/>
 

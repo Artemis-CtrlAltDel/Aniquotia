@@ -6,7 +6,7 @@
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
-    <color name="white">#BFFFFFFF</color>
+    <color name="white">#FFFFFF</color>
 
     <!--    custom colors :-->
     <color name="c_transparent">#00000000</color>
@@ -14,6 +14,8 @@
     <color name="c_primary_bg">#1F4B7BEC</color>
     <color name="c_input">#8395a7</color>
     <color name="c_error">#eb3b5a</color>
+
+    <color name="c_searchbox_bg">#1F8395A7</color>
 
     <color name="c_card_light_background">#26A4B0BE</color>
     <color name="c_card_light_foreground">#FFFFFF</color>

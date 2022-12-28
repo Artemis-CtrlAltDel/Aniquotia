@@ -3,6 +3,10 @@
 
     <string name="app_fragment_remote_quotes_title">Anime Quotes</string>
     <string name="app_fragment_saved_quotes_title">Favorite Quotes</string>
+
+    <string name="app_menu_remote">Remote</string>
+    <string name="app_menu_saved">Library</string>
+    <string name="app_menu_search">Search</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
