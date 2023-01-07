@@ -1,4 +1,4 @@
-[Description]
+[Description] <br />
 Android application that generates, randomly, anime quotes.
 
 [Screenshots]
