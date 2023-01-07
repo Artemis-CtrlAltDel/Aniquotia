@@ -13,4 +13,4 @@ Android application that generates, randomly, anime quotes.
 </div>
 
 [Coming Features] <br />
-Regrouping Animes with common Anime Titles :)
+Regrouping Animes with common Anime Titles
