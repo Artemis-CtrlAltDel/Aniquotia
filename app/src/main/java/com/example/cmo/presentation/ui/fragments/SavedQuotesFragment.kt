@@ -16,7 +16,9 @@ import com.example.cmo.other.bookmarkQuote
 import com.example.cmo.presentation.ui.adapters.MainAdapter
 import com.example.cmo.presentation.ui.adapters.OnItemClick
 import com.example.cmo.presentation.viewmodel.MainViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class SavedQuotesFragment : Fragment() {
 
     val TITLE = "Favorite Quotes"
@@ -34,27 +36,11 @@ class SavedQuotesFragment : Fragment() {
 
         _binding = FragmentSavedQuotesBinding.inflate(inflater, container, false)
 
-        adapter = MainAdapter(
-            items = arrayListOf(),
-            onItemClick = object: OnItemClick {
-                override fun onBookmarkClick(position: Int) {
-                    bookmarkQuote(adapter.itemAt(position), viewModel)
-                }
-            }
-        )
-
         viewModel = ViewModelProvider(requireActivity())[MainViewModel::class.java]
+
         getData()
-
-        binding.swipe.setOnRefreshListener {
-            getData()
-            binding.swipe.isRefreshing = false
-        }
-
-        binding.recycler.adapter = adapter
-        binding.recycler.setHasFixedSize(true)
-        binding.recycler.layoutManager =
-            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, true)
+        handleActions()
+        setupRecycler()
 
         return binding.root
     }
@@ -64,10 +50,34 @@ class SavedQuotesFragment : Fragment() {
         _binding = null
     }
 
+    private fun setupRecycler() {
+        adapter = MainAdapter(
+            items = arrayListOf(),
+            onItemClick = object : OnItemClick {
+                override fun onBookmarkClick(position: Int) {
+                    bookmarkQuote(adapter.itemAt(position), viewModel)
+                }
+            }
+        )
+
+        binding.savedRecycler.adapter = adapter
+        binding.savedRecycler.setHasFixedSize(true)
+        binding.savedRecycler.layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, true)
+    }
+
+    private fun handleActions() {
+        binding.savedSwipe.setOnRefreshListener {
+            binding.savedSwipe.isRefreshing = true
+            getData()
+            binding.savedSwipe.isRefreshing = false
+        }
+    }
+
     private fun getData(){
         viewModel.getSavedQuotes()
         viewModel.animeSavedQuotesList.observe(requireActivity()) {
-            it?.let { adapter.setData(ArrayList(it)) }
+            it?.let { adapter.setItems(ArrayList(it)) }
         }
     }
 

@@ -55,7 +55,7 @@ class MainAdapter(
 
     override fun getItemCount() = items.size
 
-    fun setData(data: ArrayList<AnimeQuote>) {
+    fun setItems(data: ArrayList<AnimeQuote>) {
         items = data
         notifyDataSetChanged()
     }

@@ -14,7 +14,9 @@ import com.example.cmo.other.bookmarkQuote
 import com.example.cmo.presentation.ui.adapters.MainAdapter
 import com.example.cmo.presentation.ui.adapters.OnItemClick
 import com.example.cmo.presentation.viewmodel.MainViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class RemoteQuotesFragment : Fragment() {
 
     val TITLE = "Anime Quotes"
@@ -33,33 +35,11 @@ class RemoteQuotesFragment : Fragment() {
 
         _binding = FragmentRemoteQuotesBinding.inflate(inflater, container, false)
 
-        adapter = MainAdapter(
-            items = arrayListOf(),
-            onItemClick = object : OnItemClick {
-                override fun onBookmarkClick(position: Int) {
-                    bookmarkQuote(adapter.itemAt(position), viewModel)
-                }
-            }
-        )
-
         viewModel = ViewModelProvider(requireActivity())[MainViewModel::class.java]
+
+        setupRecycler()
         getData()
-
-        binding.swipe.setOnRefreshListener {
-            getData()
-            binding.swipe.isRefreshing = false
-        }
-
-        binding.fab.setOnClickListener {
-            binding.swipe.isRefreshing = true
-            getData()
-            binding.swipe.isRefreshing = false
-        }
-
-        binding.recycler.adapter = adapter
-        binding.recycler.setHasFixedSize(true)
-        binding.recycler.layoutManager =
-            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        handleActions()
 
         return binding.root
     }
@@ -69,35 +49,80 @@ class RemoteQuotesFragment : Fragment() {
         _binding = null
     }
 
+    override fun onResume() {
+        if (viewModel.animeQuotesList.value?.data?.isNotEmpty() == true){
+            getData()
+        }
+        super.onResume()
+    }
+
+    private fun setupRecycler() {
+        adapter = MainAdapter(
+            items = arrayListOf(),
+            onItemClick = object : OnItemClick {
+                override fun onBookmarkClick(position: Int) {
+                    bookmarkQuote(adapter.itemAt(position), viewModel)
+                }
+            }
+        )
+
+        binding.remoteRecycler.adapter = adapter
+        binding.remoteRecycler.setHasFixedSize(true)
+        binding.remoteRecycler.layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+    }
+
+    private fun handleActions() {
+        binding.remoteSwipe.setOnRefreshListener {
+            binding.remoteSwipe.isRefreshing = true
+            getData()
+            binding.remoteSwipe.isRefreshing = false
+        }
+    }
+
+    private fun View.hide() {
+        this.isVisible = false
+    }
+
+    private fun View.show() {
+        this.isVisible = true
+    }
+
     private fun getData() {
+
         viewModel.getQuotes()
+
         viewModel.animeQuotesList.observe(requireActivity()) {
-            binding.error.isVisible = false
-            with(binding){
-                when (it) {
-                    is Resource.Loading -> {
-                        progressErrorContainer.isVisible = true
-                        progress.isVisible = true
+            binding.remoteFetchingResultsWrapper.hide()
+            binding.remoteFetchingProgressWrapper.hide()
 
-                        recyclerContainer.isVisible = false
-                        fab.isVisible = false
-                    }
-                    is Resource.Success -> {
-                        progressErrorContainer.isVisible = false
-                        progress.isVisible = false
+            when (it) {
+                is Resource.Loading -> {
+                    binding.remoteFetchingProgressWrapper.show()
+                    binding.remoteViewsWrapper.hide()
+                    binding.remoteFetchingResultsWrapper.hide()
+                }
+                is Resource.Success -> {
+                    if (it.data.isNullOrEmpty()) {
+                        binding.remoteFetchingResultsWrapper.show()
 
-                        recyclerContainer.isVisible = true
-                        fab.isVisible = true
-                        it.data?.let { adapter.setData(it) }
-                    }
-                    else -> {
-                        progressErrorContainer.isVisible = true
-                        progress.isVisible = false
-                        error.isVisible = true
+                        binding.remoteFetchingProgressWrapper.show()
+                        binding.remoteProgress.hide()
+                        binding.remoteViewsWrapper.show()
+                        binding.remoteErrorView.hide()
 
-                        recyclerContainer.isVisible = false
-                        fab.isVisible = false
+                    } else {
+                        binding.remoteFetchingResultsWrapper.show()
+                        binding.remoteFetchingProgressWrapper.hide()
+                        adapter.setItems(it.data!!)
                     }
+                }
+                else -> {
+                    binding.remoteFetchingProgressWrapper.show()
+                    binding.remoteViewsWrapper.show()
+                    binding.remoteEmptyView.hide()
+                    binding.remoteProgress.hide()
+                    binding.remoteFetchingResultsWrapper.hide()
                 }
             }
         }

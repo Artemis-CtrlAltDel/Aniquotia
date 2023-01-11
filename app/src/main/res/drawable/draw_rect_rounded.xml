@@ -3,8 +3,8 @@
 
     <item>
         <shape android:shape="rectangle">
-            <corners android:radius="10dp"/>
-            <solid android:color="@color/c_searchbox_bg"/>
+            <corners android:radius="100dp"/>
+            <solid android:color="?attr/colorSurface"/>
         </shape>
     </item>
 

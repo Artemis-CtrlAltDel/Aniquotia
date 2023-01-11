@@ -1,10 +1,13 @@
 package com.example.cmo.presentation.ui.fragments
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,10 +18,15 @@ import com.example.cmo.other.bookmarkQuote
 import com.example.cmo.presentation.ui.adapters.MainAdapter
 import com.example.cmo.presentation.ui.adapters.OnItemClick
 import com.example.cmo.presentation.viewmodel.MainViewModel
+import dagger.hilt.android.AndroidEntryPoint
+import kotlin.math.log
 
+@AndroidEntryPoint
 class SearchQuotesFragment : Fragment() {
 
     private val TITLE = "Search Quotes"
+
+    private val TAG = "SearchQuotesFragment"
 
     private var _binding: FragmentSearchQuotesBinding? = null
     private val binding get() = _binding!!
@@ -34,26 +42,10 @@ class SearchQuotesFragment : Fragment() {
         _binding = FragmentSearchQuotesBinding.inflate(inflater, container, false)
 
         viewModel = ViewModelProvider(requireActivity())[MainViewModel::class.java]
-        // get data
 
-        adapter = MainAdapter(
-            items = arrayListOf(),
-            onItemClick = object : OnItemClick {
-                override fun onBookmarkClick(position: Int) {
-                    bookmarkQuote(adapter.itemAt(position), viewModel)
-                }
-            }
-        )
-
-        binding.swipe.setOnRefreshListener {
-            // get data
-            binding.swipe.isRefreshing = false
-        }
-
-        binding.recycler.adapter = adapter
-        binding.recycler.setHasFixedSize(true)
-        binding.recycler.layoutManager =
-            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        bindViews()
+        setupRecycler()
+        handleActions()
 
         return binding.root
     }
@@ -63,36 +55,109 @@ class SearchQuotesFragment : Fragment() {
         _binding = null
     }
 
-    private fun getData(pairTypeValue: Pair<String, String>) {
-        when (pairTypeValue.first){
-            "ANIME:" -> viewModel.getQuotesByAnime(pairTypeValue.second)
-            "CHARACTER:" -> viewModel.getRandomQuoteByCharacter(pairTypeValue.second)
+    override fun onResume() {
+        if (viewModel.animeQuotesList.value?.data?.isNotEmpty() == true){
+            getData()
+        }
+        super.onResume()
+    }
+
+    private fun bindViews() {
+        binding.searchFetchingProgressWrapper.hide()
+    }
+
+    private fun setupRecycler() {
+        adapter = MainAdapter(
+            items = arrayListOf(),
+            onItemClick = object : OnItemClick {
+                override fun onBookmarkClick(position: Int) {
+                    bookmarkQuote(adapter.itemAt(position), viewModel)
+                }
+            }
+        )
+
+        binding.searchRecycler.adapter = adapter
+        binding.searchRecycler.setHasFixedSize(true)
+        binding.searchRecycler.layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+    }
+
+    private fun handleActions() {
+        binding.searchSwipe.setOnRefreshListener {
+            binding.searchSwipe.isRefreshing = true
+            getData()
+            binding.searchSwipe.isRefreshing = false
+        }
+        binding.searchIconWrapper.setOnClickListener {
+            if (binding.searchBox.text.isNullOrBlank()){
+                binding.searchBox.mutate()
+            }else {
+                getData()
+                binding.searchBox.reset()
+            }
+        }
+    }
+
+    private fun View.hide() {
+        this.isVisible = false
+    }
+
+    private fun View.show() {
+        this.isVisible = true
+    }
+
+    private fun EditText.reset() {
+        this.text.clear()
+        this.hint = getString(R.string.app_search_query_hint)
+        this.backgroundTintList = AppCompatResources.getColorStateList(requireContext(), R.color.c_searchbox_bg)
+    }
+
+    private fun EditText.mutate() {
+        this.hint = getString(R.string.app_fetching_progress_error_empty_query)
+        this.backgroundTintList = AppCompatResources.getColorStateList(requireContext(), R.color.c_error_bg)
+    }
+
+    private fun getData() {
+
+        val searchQuery = binding.searchBox.text.split(":")
+        when (searchQuery[0].lowercase().trim()) {
+            "anime" -> viewModel.getQuotesByAnime(searchQuery[1].lowercase().trim())
+            "char" -> viewModel.getQuotesByCharacter(searchQuery[1].lowercase().trim())
         }
 
-        viewModel.animeQuotesList.observe(requireActivity()){
-            binding.error.isVisible = false
-            with(binding){
-                when (it) {
-                    is Resource.Loading -> {
-                        progressErrorContainer.isVisible = true
-                        progress.isVisible = true
+        println("search query : $searchQuery")
 
-                        recyclerContainer.isVisible = false
-                    }
-                    is Resource.Success -> {
-                        progressErrorContainer.isVisible = false
-                        progress.isVisible = false
+        viewModel.animeQuotesList.observe(requireActivity()) {
 
-                        recyclerContainer.isVisible = true
-                        it.data?.let { adapter.setData(it) }
-                    }
-                    else -> {
-                        progressErrorContainer.isVisible = true
-                        progress.isVisible = false
-                        error.isVisible = true
+            println("data : ${it.data}")
 
-                        recyclerContainer.isVisible = false
+            when (it) {
+                is Resource.Loading -> {
+                    binding.searchFetchingProgressWrapper.show()
+                    binding.searchViewsWrapper.hide()
+                    binding.searchFetchingResultsWrapper.hide()
+                }
+                is Resource.Success -> {
+                    if (it.data.isNullOrEmpty()) {
+                        binding.searchFetchingResultsWrapper.show()
+
+                        binding.searchFetchingProgressWrapper.show()
+                        binding.searchProgress.hide()
+                        binding.searchViewsWrapper.show()
+                        binding.searchErrorView.hide()
+
+                    } else {
+                        binding.searchFetchingResultsWrapper.show()
+                        binding.searchFetchingProgressWrapper.hide()
+                        adapter.setItems(it.data!!)
                     }
+                }
+                else -> {
+                    binding.searchFetchingProgressWrapper.show()
+                    binding.searchViewsWrapper.show()
+                    binding.searchEmptyView.hide()
+                    binding.searchProgress.hide()
+                    binding.searchFetchingResultsWrapper.hide()
                 }
             }
         }

@@ -15,6 +15,7 @@ import com.example.cmo.presentation.ui.adapters.MainAdapter
 import com.example.cmo.presentation.ui.adapters.OnItemClick
 import com.example.cmo.presentation.ui.fragments.RemoteQuotesFragment
 import com.example.cmo.presentation.ui.fragments.SavedQuotesFragment
+import com.example.cmo.presentation.ui.fragments.SearchQuotesFragment
 import com.example.cmo.presentation.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -26,6 +27,17 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        binding = ActivityMainBinding.inflate(layoutInflater)
+
+        bindViews()
+        replaceFragment(SearchQuotesFragment())
+        handleActions()
+
+        setContentView(binding.root)
+    }
+
+    private fun bindViews(){
+
         requestWindowFeature(Window.FEATURE_NO_TITLE)
         window.setFlags(
             WindowManager.LayoutParams.FLAG_FULLSCREEN,
@@ -33,20 +45,18 @@ class MainActivity : AppCompatActivity() {
         )
         supportActionBar?.hide()
 
-        binding = ActivityMainBinding.inflate(layoutInflater)
+        binding.bottomNavigation.selectedItemId = R.id.menu_search
+    }
 
-        replaceFragment(RemoteQuotesFragment())
-        binding.bottomNavigation.selectedItemId = R.id.menu_remote
-
+    private fun handleActions(){
         binding.bottomNavigation.setOnItemSelectedListener {
             when (it.itemId){
                 R.id.menu_remote -> replaceFragment(RemoteQuotesFragment())
+                R.id.menu_search -> replaceFragment(SearchQuotesFragment())
                 R.id.menu_bookmark -> replaceFragment(SavedQuotesFragment())
             }
             true
         }
-
-        setContentView(binding.root)
     }
 
     private fun replaceFragment(fragment: Fragment) {

@@ -6,7 +6,7 @@
     tools:context=".presentation.ui.fragments.SavedQuotesFragment">
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/swipe"
+        android:id="@+id/saved_swipe"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -35,7 +35,7 @@
                     />
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recycler"
+                    android:id="@+id/saved_recycler"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     />
