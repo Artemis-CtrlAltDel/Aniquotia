@@ -37,6 +37,7 @@ class RemoteQuotesFragment : Fragment() {
 
         viewModel = ViewModelProvider(requireActivity())[MainViewModel::class.java]
 
+        bindViews()
         setupRecycler()
         getData()
         handleActions()
@@ -54,6 +55,10 @@ class RemoteQuotesFragment : Fragment() {
             getData()
         }
         super.onResume()
+    }
+
+    private fun bindViews(){
+        binding.remoteViewsWrapper.hide()
     }
 
     private fun setupRecycler() {
@@ -74,10 +79,17 @@ class RemoteQuotesFragment : Fragment() {
 
     private fun handleActions() {
         binding.remoteSwipe.setOnRefreshListener {
-            binding.remoteSwipe.isRefreshing = true
-            getData()
-            binding.remoteSwipe.isRefreshing = false
+            refresh()
         }
+        binding.fab.setOnClickListener {
+            refresh()
+        }
+    }
+
+    private fun refresh() {
+        binding.remoteSwipe.isRefreshing = true
+        getData()
+        binding.remoteSwipe.isRefreshing = false
     }
 
     private fun View.hide() {
@@ -101,6 +113,7 @@ class RemoteQuotesFragment : Fragment() {
                     binding.remoteFetchingProgressWrapper.show()
                     binding.remoteViewsWrapper.hide()
                     binding.remoteFetchingResultsWrapper.hide()
+                    binding.fab.hide()
                 }
                 is Resource.Success -> {
                     if (it.data.isNullOrEmpty()) {
@@ -111,10 +124,13 @@ class RemoteQuotesFragment : Fragment() {
                         binding.remoteViewsWrapper.show()
                         binding.remoteErrorView.hide()
 
+                        binding.fab.hide()
+
                     } else {
                         binding.remoteFetchingResultsWrapper.show()
                         binding.remoteFetchingProgressWrapper.hide()
                         adapter.setItems(it.data!!)
+                        binding.fab.show()
                     }
                 }
                 else -> {
@@ -123,6 +139,7 @@ class RemoteQuotesFragment : Fragment() {
                     binding.remoteEmptyView.hide()
                     binding.remoteProgress.hide()
                     binding.remoteFetchingResultsWrapper.hide()
+                    binding.fab.show()
                 }
             }
         }

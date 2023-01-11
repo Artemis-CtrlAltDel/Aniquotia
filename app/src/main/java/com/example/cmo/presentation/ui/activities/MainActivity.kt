@@ -30,7 +30,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
 
         bindViews()
-        replaceFragment(SearchQuotesFragment())
+        replaceFragment(RemoteQuotesFragment())
         handleActions()
 
         setContentView(binding.root)
@@ -45,7 +45,7 @@ class MainActivity : AppCompatActivity() {
         )
         supportActionBar?.hide()
 
-        binding.bottomNavigation.selectedItemId = R.id.menu_search
+        binding.bottomNavigation.selectedItemId = R.id.menu_remote
     }
 
     private fun handleActions(){

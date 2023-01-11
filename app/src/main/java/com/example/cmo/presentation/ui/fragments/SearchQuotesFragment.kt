@@ -56,7 +56,7 @@ class SearchQuotesFragment : Fragment() {
     }
 
     override fun onResume() {
-        if (viewModel.animeQuotesList.value?.data?.isNotEmpty() == true){
+        if (viewModel.animeSearchedQuotesList.value?.data.isNullOrEmpty()){
             getData()
         }
         super.onResume()
@@ -64,6 +64,7 @@ class SearchQuotesFragment : Fragment() {
 
     private fun bindViews() {
         binding.searchFetchingProgressWrapper.hide()
+        binding.searchEmptyQueryMessage.hide()
     }
 
     private fun setupRecycler() {
@@ -89,11 +90,11 @@ class SearchQuotesFragment : Fragment() {
             binding.searchSwipe.isRefreshing = false
         }
         binding.searchIconWrapper.setOnClickListener {
-            if (binding.searchBox.text.isNullOrBlank()){
-                binding.searchBox.mutate()
-            }else {
+            if (!validateQuery()) {
+                binding.searchEmptyQueryMessage.show()
+            } else {
+                binding.searchEmptyQueryMessage.hide()
                 getData()
-                binding.searchBox.reset()
             }
         }
     }
@@ -106,15 +107,10 @@ class SearchQuotesFragment : Fragment() {
         this.isVisible = true
     }
 
-    private fun EditText.reset() {
-        this.text.clear()
-        this.hint = getString(R.string.app_search_query_hint)
-        this.backgroundTintList = AppCompatResources.getColorStateList(requireContext(), R.color.c_searchbox_bg)
-    }
-
-    private fun EditText.mutate() {
-        this.hint = getString(R.string.app_fetching_progress_error_empty_query)
-        this.backgroundTintList = AppCompatResources.getColorStateList(requireContext(), R.color.c_error_bg)
+    private fun validateQuery(): Boolean {
+        val queryPattern = "(anime|Anime|ANIME|char|Char|CHAR)( )*:( )*(.)+".toRegex()
+        return binding.searchBox.text.isNotEmpty() &&
+                binding.searchBox.text.matches(queryPattern)
     }
 
     private fun getData() {
@@ -125,11 +121,7 @@ class SearchQuotesFragment : Fragment() {
             "char" -> viewModel.getQuotesByCharacter(searchQuery[1].lowercase().trim())
         }
 
-        println("search query : $searchQuery")
-
-        viewModel.animeQuotesList.observe(requireActivity()) {
-
-            println("data : ${it.data}")
+        viewModel.animeSearchedQuotesList.observe(requireActivity()) {
 
             when (it) {
                 is Resource.Loading -> {

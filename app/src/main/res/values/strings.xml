@@ -12,8 +12,8 @@
     <string name="app_fetching_progress_title">Hold on a moment !</string>
     <string name="app_fetching_progress_subtitle">We are getting it for you 😁</string>
     <string name="app_fetching_progress_empty">Looks like there is no data yet</string>
-    <string name="app_fetching_progress_error">Something went wrong</string>
-    <string name="app_fetching_progress_error_empty_query">Can not search for an empty query !</string>
+    <string name="app_fetching_progress_error">Invalid anime/character name, please try again</string>
+    <string name="app_fetching_progress_error_empty_query">Please enter a valid query format in the search box !</string>
 
 
     <string name="app_refresh_fab_content_description">Refresh</string>

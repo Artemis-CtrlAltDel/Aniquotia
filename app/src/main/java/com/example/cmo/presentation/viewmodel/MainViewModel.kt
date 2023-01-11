@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.cmo.data.local.pojo.AnimeQuote
 import com.example.cmo.data.repository.Repository
+import com.example.cmo.other.Event
 import com.example.cmo.other.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -21,9 +22,11 @@ class MainViewModel @Inject constructor(private val repository: Repository) : Vi
     private val compositeDisposable = CompositeDisposable()
 
     /** API **/
-    private val _animeQuotesList: MutableLiveData<Resource<ArrayList<AnimeQuote>>> =
-        MutableLiveData(Resource.Loading(arrayListOf()))
+    private val _animeQuotesList = MutableLiveData<Resource<ArrayList<AnimeQuote>>>()
     val animeQuotesList get() = _animeQuotesList
+
+    private val _animeSearchedQuotesList = MutableLiveData<Resource<ArrayList<AnimeQuote>>>()
+    val animeSearchedQuotesList get() = _animeSearchedQuotesList
 
     private val _animeRandomQuote: MutableLiveData<AnimeQuote> =
         MutableLiveData(null)
@@ -47,7 +50,7 @@ class MainViewModel @Inject constructor(private val repository: Repository) : Vi
             repository.getQuotesByCharacter(character)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ result -> _animeQuotesList.value = result })
+                .subscribe({ result -> _animeSearchedQuotesList.value = result })
                 { error -> Log.e(TAG, "getQuotesByCharacter: ${error.message}") }
 
         compositeDisposable.add(observable)
@@ -58,7 +61,7 @@ class MainViewModel @Inject constructor(private val repository: Repository) : Vi
             repository.getQuotesByCharacter(anime)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ result -> _animeQuotesList.value = result })
+                .subscribe({ result -> _animeSearchedQuotesList.value = result })
                 { error -> Log.e(TAG, "getQuotesByCharacter: ${error.message}") }
 
         compositeDisposable.add(observable)
