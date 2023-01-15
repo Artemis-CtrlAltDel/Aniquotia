@@ -1,6 +1,7 @@
 package com.example.cmo.presentation.ui.fragments
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -11,21 +12,20 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.cmo.databinding.FragmentRemoteQuotesBinding
 import com.example.cmo.other.Resource
 import com.example.cmo.other.bookmarkQuote
-import com.example.cmo.presentation.ui.adapters.MainAdapter
-import com.example.cmo.presentation.ui.adapters.OnItemClick
+import com.example.cmo.other.isConnected
+import com.example.cmo.presentation.ui.adapters.QuotesAdapter
+import com.example.cmo.presentation.ui.adapters.OnQuoteClick
 import com.example.cmo.presentation.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class RemoteQuotesFragment : Fragment() {
 
-    val TITLE = "Anime Quotes"
-
     private var _binding: FragmentRemoteQuotesBinding? = null
     private val binding get() = _binding!!
 
 
-    private lateinit var adapter: MainAdapter
+    private lateinit var adapter: QuotesAdapter
     private lateinit var viewModel: MainViewModel
 
     override fun onCreateView(
@@ -50,99 +50,63 @@ class RemoteQuotesFragment : Fragment() {
         _binding = null
     }
 
-    override fun onResume() {
-        if (viewModel.animeQuotesList.value?.data?.isNotEmpty() == true){
-            getData()
-        }
-        super.onResume()
-    }
-
-    private fun bindViews(){
-        binding.remoteViewsWrapper.hide()
+    private fun bindViews() {
+//        binding.dataWrapper.isVisible = false
+//        binding.includeProgress.progressWrapper.isVisible = false
+//        binding.includeEmpty.emptyWrapper.isVisible = false
+//        binding.includeError.errorWrapper.isVisible = false
+//
+//        println("Testttttttttttttttttttt")
+//        if (!isConnected(requireContext())) {
+//            println("It's not connected")
+//            binding.includeError.errorWrapper.isVisible = true
+//        } else {
+//            println("It's connected")
+//            binding.includeEmpty.emptyWrapper.isVisible = true
+//        }
     }
 
     private fun setupRecycler() {
-        adapter = MainAdapter(
+        adapter = QuotesAdapter(
             items = arrayListOf(),
-            onItemClick = object : OnItemClick {
+            onQuoteClick = object : OnQuoteClick {
                 override fun onBookmarkClick(position: Int) {
                     bookmarkQuote(adapter.itemAt(position), viewModel)
                 }
             }
         )
 
-        binding.remoteRecycler.adapter = adapter
-        binding.remoteRecycler.setHasFixedSize(true)
-        binding.remoteRecycler.layoutManager =
+        binding.recycler.adapter = adapter
+        binding.recycler.setHasFixedSize(true)
+        binding.recycler.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
     }
 
     private fun handleActions() {
-        binding.remoteSwipe.setOnRefreshListener {
+        binding.swipe.setOnRefreshListener {
             refresh()
         }
         binding.fab.setOnClickListener {
             refresh()
         }
+        binding.includeError.tryAgain.setOnClickListener {
+
+        }
     }
 
     private fun refresh() {
-        binding.remoteSwipe.isRefreshing = true
-        getData()
-        binding.remoteSwipe.isRefreshing = false
-    }
-
-    private fun View.hide() {
-        this.isVisible = false
-    }
-
-    private fun View.show() {
-        this.isVisible = true
+//        binding.swipe.isRefreshing = true
+//        getData()
+//        binding.swipe.isRefreshing = false
     }
 
     private fun getData() {
 
-        viewModel.getQuotes()
-
-        viewModel.animeQuotesList.observe(requireActivity()) {
-            binding.remoteFetchingResultsWrapper.hide()
-            binding.remoteFetchingProgressWrapper.hide()
-
-            when (it) {
-                is Resource.Loading -> {
-                    binding.remoteFetchingProgressWrapper.show()
-                    binding.remoteViewsWrapper.hide()
-                    binding.remoteFetchingResultsWrapper.hide()
-                    binding.fab.hide()
-                }
-                is Resource.Success -> {
-                    if (it.data.isNullOrEmpty()) {
-                        binding.remoteFetchingResultsWrapper.show()
-
-                        binding.remoteFetchingProgressWrapper.show()
-                        binding.remoteProgress.hide()
-                        binding.remoteViewsWrapper.show()
-                        binding.remoteErrorView.hide()
-
-                        binding.fab.hide()
-
-                    } else {
-                        binding.remoteFetchingResultsWrapper.show()
-                        binding.remoteFetchingProgressWrapper.hide()
-                        adapter.setItems(it.data!!)
-                        binding.fab.show()
-                    }
-                }
-                else -> {
-                    binding.remoteFetchingProgressWrapper.show()
-                    binding.remoteViewsWrapper.show()
-                    binding.remoteEmptyView.hide()
-                    binding.remoteProgress.hide()
-                    binding.remoteFetchingResultsWrapper.hide()
-                    binding.fab.show()
-                }
-            }
-        }
+//        viewModel.getQuotes()
+//
+//        viewModel.animeQuotesList.observe(requireActivity()) {
+//
+//        }
     }
 
 }

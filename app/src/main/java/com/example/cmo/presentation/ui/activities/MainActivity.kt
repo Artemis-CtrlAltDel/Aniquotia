@@ -4,19 +4,12 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Window
 import android.view.WindowManager
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.cmo.R
 import com.example.cmo.databinding.ActivityMainBinding
-import com.example.cmo.other.bookmarkQuote
-import com.example.cmo.other.replaceFragment
-import com.example.cmo.presentation.ui.adapters.MainAdapter
-import com.example.cmo.presentation.ui.adapters.OnItemClick
 import com.example.cmo.presentation.ui.fragments.RemoteQuotesFragment
 import com.example.cmo.presentation.ui.fragments.SavedQuotesFragment
-import com.example.cmo.presentation.ui.fragments.SearchQuotesFragment
-import com.example.cmo.presentation.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -30,37 +23,46 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
 
         bindViews()
-        replaceFragment(RemoteQuotesFragment())
+        replaceFragment(RemoteQuotesFragment(), getString(R.string.fragment_remote_title))
         handleActions()
 
         setContentView(binding.root)
     }
 
-    private fun bindViews(){
+    private fun bindViews() {
 
         requestWindowFeature(Window.FEATURE_NO_TITLE)
         window.setFlags(
             WindowManager.LayoutParams.FLAG_FULLSCREEN,
             WindowManager.LayoutParams.FLAG_FULLSCREEN
         )
-        supportActionBar?.hide()
+
+        setSupportActionBar(binding.includeToolbar.toolbar)
+        supportActionBar?.subtitle = ""
 
         binding.bottomNavigation.selectedItemId = R.id.menu_remote
+        binding.includeToolbar.goBack.isVisible = false
     }
 
-    private fun handleActions(){
+    private fun handleActions() {
         binding.bottomNavigation.setOnItemSelectedListener {
-            when (it.itemId){
-                R.id.menu_remote -> replaceFragment(RemoteQuotesFragment())
-                R.id.menu_search -> replaceFragment(SearchQuotesFragment())
-                R.id.menu_bookmark -> replaceFragment(SavedQuotesFragment())
+            when (it.itemId) {
+                R.id.menu_remote -> replaceFragment(
+                    RemoteQuotesFragment(),
+                    getString(R.string.fragment_remote_title)
+                )
+                R.id.menu_bookmark -> replaceFragment(
+                    SavedQuotesFragment(),
+                    getString(R.string.fragment_saved_title)
+                )
             }
             true
         }
     }
 
-    private fun replaceFragment(fragment: Fragment) {
+    private fun replaceFragment(fragment: Fragment, title: String) {
         val transaction = supportFragmentManager.beginTransaction()
+        supportActionBar?.title = title
         transaction.replace(R.id.frame, fragment)
         transaction.commit()
     }

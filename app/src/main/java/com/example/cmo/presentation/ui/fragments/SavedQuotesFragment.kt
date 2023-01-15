@@ -1,32 +1,26 @@
 package com.example.cmo.presentation.ui.fragments
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.cmo.R
-import com.example.cmo.data.local.pojo.AnimeQuote
 import com.example.cmo.databinding.FragmentSavedQuotesBinding
 import com.example.cmo.other.bookmarkQuote
-import com.example.cmo.presentation.ui.adapters.MainAdapter
-import com.example.cmo.presentation.ui.adapters.OnItemClick
+import com.example.cmo.presentation.ui.adapters.QuotesAdapter
+import com.example.cmo.presentation.ui.adapters.OnQuoteClick
 import com.example.cmo.presentation.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class SavedQuotesFragment : Fragment() {
 
-    val TITLE = "Favorite Quotes"
-
     private var _binding: FragmentSavedQuotesBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var adapter: MainAdapter
+    private lateinit var adapter: QuotesAdapter
     private lateinit var viewModel: MainViewModel
 
     override fun onCreateView(
@@ -51,9 +45,9 @@ class SavedQuotesFragment : Fragment() {
     }
 
     private fun setupRecycler() {
-        adapter = MainAdapter(
+        adapter = QuotesAdapter(
             items = arrayListOf(),
-            onItemClick = object : OnItemClick {
+            onQuoteClick = object : OnQuoteClick {
                 override fun onBookmarkClick(position: Int) {
                     bookmarkQuote(adapter.itemAt(position), viewModel)
                 }

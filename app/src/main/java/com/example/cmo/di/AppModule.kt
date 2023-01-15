@@ -2,8 +2,13 @@ package com.example.cmo.di
 
 import android.content.Context
 import androidx.room.Room
-import com.example.cmo.data.AnimeQuoteDb
-import com.example.cmo.data.network.AnimeQuoteApi
+import com.example.cmo.data.AniquotiaDb
+import com.example.cmo.data.local.DetailsDao
+import com.example.cmo.data.local.QuotesDao
+import com.example.cmo.data.network.DetailsApi
+import com.example.cmo.data.network.QuotesApi
+import com.example.cmo.data.repository.DetailsRepository
+import com.example.cmo.data.repository.QuotesRepository
 import com.example.cmo.other.Constants
 import dagger.Module
 import dagger.Provides
@@ -19,29 +24,51 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object AppModule {
 
-    @JvmStatic
     @Singleton
     @Provides
-    fun provideAnimeQuoteApiService() =
+    fun provideAnimeQuotesApi() =
         Retrofit.Builder()
-            .baseUrl(Constants.BASE_URL)
+            .baseUrl(Constants.ANIME_QUOTES_BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
             .build()
-            .create(AnimeQuoteApi::class.java)
+            .create(QuotesApi::class.java)
 
-    @JvmStatic
+    @Singleton
+    @Provides
+    fun provideAnimeDetailsApi() =
+        Retrofit.Builder()
+            .baseUrl(Constants.ANIME_DETAILS_BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
+            .build()
+            .create(DetailsApi::class.java)
+
     @Singleton
     @Provides
     fun provideDb(@ApplicationContext context: Context) =
-        Room.databaseBuilder(context, AnimeQuoteDb::class.java, "anime_quote_db")
+        Room.databaseBuilder(context, AniquotiaDb::class.java, "anime_quote_db")
             .fallbackToDestructiveMigration()
             .allowMainThreadQueries()
             .build()
 
-    @JvmStatic
     @Singleton
     @Provides
-    fun provideDao(db: AnimeQuoteDb) =
+    fun provideAnimeQuotesDao(db: AniquotiaDb) =
         db.animeQuoteDao()
+
+    @Singleton
+    @Provides
+    fun provideAnimeDetailsDao(db: AniquotiaDb) =
+        db.animeDetailsDao()
+
+    @Singleton
+    @Provides
+    fun provideAnimeQuotesRepository(api: QuotesApi, dao: QuotesDao) =
+        QuotesRepository(api, dao)
+
+    @Singleton
+    @Provides
+    fun provideAnimeDetailsRepository(api: DetailsApi, dao: DetailsDao) =
+        DetailsRepository(api, dao)
 }

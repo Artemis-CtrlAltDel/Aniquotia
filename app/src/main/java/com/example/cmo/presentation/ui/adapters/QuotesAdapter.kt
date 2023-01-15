@@ -5,15 +5,14 @@ import android.view.ViewGroup
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.recyclerview.widget.RecyclerView
 import com.example.cmo.R
-import com.example.cmo.data.local.pojo.AnimeQuote
-import com.example.cmo.data.network.dto.AnimeQuoteApiDto
+import com.example.cmo.data.local.pojo.Quote
 import com.example.cmo.databinding.CardQuoteDetailsBinding
 
-class MainAdapter(
-    private var items: ArrayList<AnimeQuote>,
-    private val onItemClick: OnItemClick
+class QuotesAdapter(
+    private var items: ArrayList<Quote>,
+    private val onQuoteClick: OnQuoteClick
 ) :
-    RecyclerView.Adapter<MainAdapter.ViewHolder>() {
+    RecyclerView.Adapter<QuotesAdapter.ViewHolder>() {
 
     inner class ViewHolder(val binding: CardQuoteDetailsBinding) :
         RecyclerView.ViewHolder(binding.root)
@@ -47,7 +46,7 @@ class MainAdapter(
             )
 
             binding.bookmark.setOnClickListener {
-                onItemClick.onBookmarkClick(position)
+                onQuoteClick.onBookmarkClick(position)
                 notifyDataSetChanged()
             }
         }
@@ -55,7 +54,7 @@ class MainAdapter(
 
     override fun getItemCount() = items.size
 
-    fun setItems(data: ArrayList<AnimeQuote>) {
+    fun setItems(data: ArrayList<Quote>) {
         items = data
         notifyDataSetChanged()
     }

@@ -6,17 +6,17 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.example.cmo.data.local.pojo.AnimeQuote
+import com.example.cmo.data.local.pojo.Quote
 
 @Dao
-interface AnimeQuoteDao {
+interface QuotesDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertQuote(quote: AnimeQuote)
+    fun insertQuote(quote: Quote)
 
-    @Query("SELECT * FROM QUOTE_TABLE")
-    fun getQuotes(): LiveData<List<AnimeQuote>>
+    @Query("SELECT * FROM quotes_table")
+    fun getQuotes(): LiveData<List<Quote>>
 
     @Delete
-    fun deleteQuote(quote: AnimeQuote)
+    fun deleteQuote(quote: Quote)
 }

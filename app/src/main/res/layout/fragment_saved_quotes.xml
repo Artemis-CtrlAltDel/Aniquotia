@@ -11,7 +11,7 @@
         android:layout_height="match_parent">
 
         <androidx.core.widget.NestedScrollView
-            android:background="?attr/colorContainer"
+            android:background="?attr/colorSurfaceVariant"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:paddingHorizontal="15dp"
@@ -27,7 +27,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/app_fragment_saved_quotes_title"
+                    android:text="@string/fragment_saved_title"
                     android:gravity="start|center"
                     android:textSize="@dimen/_25sdp"
                     android:textStyle="bold"

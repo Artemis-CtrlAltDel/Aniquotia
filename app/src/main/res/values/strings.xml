@@ -1,25 +1,42 @@
 <resources>
     <string name="app_name">Cmo</string>
 
-    <string name="app_fragment_remote_quotes_title">Anime Quotes</string>
-    <string name="app_fragment_saved_quotes_title">Favorite Quotes</string>
-    <string name="app_fragment_search_quotes_title">Search Quotes</string>
+    <!-- Content Description -->
+    <string name="cd_go_back">Go back</string>
+    <string name="cd_refresh">Refresh</string>
 
-    <string name="app_menu_remote">Remote</string>
-    <string name="app_menu_saved">Library</string>
-    <string name="app_menu_search">Search</string>
+    <!-- Fragment Title -->
+    <string name="fragment_remote_title">Anime Quotes</string>
+    <string name="fragment_saved_title">Favorite Quotes</string>
+    <string name="fragment_search_title">Search Quotes</string>
+    <string name="fragment_collection_title">Collections of Quotes</string>
 
-    <string name="app_fetching_progress_title">Hold on a moment !</string>
-    <string name="app_fetching_progress_subtitle">We are getting it for you 😁</string>
-    <string name="app_fetching_progress_empty">Looks like there is no data yet</string>
+    <!-- Menu -->
+    <string name="menu_remote">Remote</string>
+    <string name="menu_saved">Library</string>
+    <string name="menu_search">Search</string>
+    <string name="menu_collection">Collections</string>
+
+    <!-- Search -->
+    <string name="search_query_hint">anime/char: Detective Conan</string>
+
+    <!-- Progress -->
+    <string name="progress_title">Hang tight</string>
+    <string name="progress_subtitle">We are getting it for you</string>
+
+    <!-- Empty view -->
+    <string name="empty_title">Oops !</string>
+    <string name="empty_subtitle">Looks like there is no data yet</string>
+
+    <!-- Error view -->
+    <string name="error_title">Ouch !</string>
+    <string name="error_subtitle">Looks like there is something wrong</string>
+    <string name="error_button">Try again</string>
+
+
     <string name="app_fetching_progress_error">Invalid anime/character name, please try again</string>
     <string name="app_fetching_progress_error_empty_query">Please enter a valid query format in the search box !</string>
 
-
-    <string name="app_refresh_fab_content_description">Refresh</string>
-
-    <string name="app_search_tip">Please enter \"anime\" or \"char\" followed by a space | e.g:anime Steins;Gate</string>
-    <string name="app_search_query_hint">anime/char: Detective Conan</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

@@ -4,9 +4,8 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.cmo.data.local.pojo.AnimeQuote
-import com.example.cmo.data.repository.Repository
-import com.example.cmo.other.Event
+import com.example.cmo.data.local.pojo.Quote
+import com.example.cmo.data.repository.QuotesRepository
 import com.example.cmo.other.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -15,20 +14,20 @@ import io.reactivex.rxjava3.schedulers.Schedulers
 import javax.inject.Inject
 
 @HiltViewModel
-class MainViewModel @Inject constructor(private val repository: Repository) : ViewModel() {
+class MainViewModel @Inject constructor(private val repository: QuotesRepository) : ViewModel() {
 
     private val TAG = "MainViewModel"
 
     private val compositeDisposable = CompositeDisposable()
 
     /** API **/
-    private val _animeQuotesList = MutableLiveData<Resource<ArrayList<AnimeQuote>>>()
+    private val _animeQuotesList = MutableLiveData<Resource<ArrayList<Quote>>>()
     val animeQuotesList get() = _animeQuotesList
 
-    private val _animeSearchedQuotesList = MutableLiveData<Resource<ArrayList<AnimeQuote>>>()
+    private val _animeSearchedQuotesList = MutableLiveData<Resource<ArrayList<Quote>>>()
     val animeSearchedQuotesList get() = _animeSearchedQuotesList
 
-    private val _animeRandomQuote: MutableLiveData<AnimeQuote> =
+    private val _animeRandomQuote: MutableLiveData<Quote> =
         MutableLiveData(null)
     val animeRandomQuote get() = _animeRandomQuote
 
@@ -96,14 +95,14 @@ class MainViewModel @Inject constructor(private val repository: Repository) : Vi
     }
 
     /** Database **/
-    private var _animeSavedQuotesList: LiveData<List<AnimeQuote>> =
+    private var _animeSavedQuotesList: LiveData<List<Quote>> =
         MutableLiveData(listOf())
     val animeSavedQuotesList get() = _animeSavedQuotesList
 
-    fun insertQuote(quote: AnimeQuote) =
+    fun insertQuote(quote: Quote) =
         repository.insertQuote(quote)
 
-    fun deleteQuote(quote: AnimeQuote) =
+    fun deleteQuote(quote: Quote) =
         repository.deleteQuote(quote)
 
     fun getSavedQuotes() {

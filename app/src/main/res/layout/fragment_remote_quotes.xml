@@ -3,40 +3,40 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="?attr/actionBarSize"
     tools:context=".presentation.ui.fragments.RemoteQuotesFragment">
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/remote_swipe"
+        android:id="@+id/swipe"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="?attr/colorContainer"
+            android:background="?attr/colorSurfaceVariant"
             android:paddingHorizontal="15dp">
 
             <LinearLayout
-                android:id="@+id/remote_fetching_results_wrapper"
+                android:id="@+id/data_wrapper"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:paddingTop="60dp"
-                android:visibility="gone">
+                android:paddingTop="@dimen/_45sdp">
 
                 <TextView
-                    android:id="@+id/remote_fragment_title"
+                    android:id="@+id/fragment_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="start|center"
-                    android:text="@string/app_fragment_remote_quotes_title"
+                    android:text="@string/fragment_remote_title"
                     android:textColor="?attr/colorOnSurface"
                     android:textSize="@dimen/_25sdp"
                     android:textStyle="bold" />
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/remote_recycler"
+                    android:id="@+id/recycler"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
@@ -45,70 +45,15 @@
         </androidx.core.widget.NestedScrollView>
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-    <FrameLayout
-        android:id="@+id/remote_fetching_progress_wrapper"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center">
-
-        <LinearLayout
-            android:id="@+id/remote_progress"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:orientation="vertical">
-
-            <ProgressBar
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_20sdp"
-                android:indeterminateTint="?attr/colorPrimary" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:text="@string/app_fetching_progress_title"
-                android:textColor="?attr/colorOnSurface"
-                android:textSize="@dimen/_16sdp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/app_fetching_progress_subtitle"
-                android:textColor="?attr/colorOnSurface"
-                android:textSize="@dimen/_14sdp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/remote_views_wrapper"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/remote_error_view"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="@dimen/_20sdp"
-                android:gravity="center"
-                android:text="@string/app_fetching_progress_error"
-                android:textColor="?attr/colorOnSurface"
-                />
-
-            <TextView
-                android:id="@+id/remote_empty_view"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="@dimen/_20sdp"
-                android:gravity="center"
-                android:text="@string/app_fetching_progress_empty"
-                android:textColor="?attr/colorOnSurface"
-                />
-        </LinearLayout>
-    </FrameLayout>
+    <include
+        android:id="@+id/include_progress"
+        layout="@layout/_progress"/>
+    <include
+        android:id="@+id/include_empty"
+        layout="@layout/_empty"/>
+    <include
+        android:id="@+id/include_error"
+        layout="@layout/_error"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
@@ -119,8 +64,7 @@
         android:layout_marginBottom="@dimen/_16sdp"
         android:backgroundTint="?attr/colorPrimary"
         android:src="@drawable/ic_refresh"
-        android:visibility="gone"
         app:tint="?attr/colorOnSurface"
-        android:contentDescription="@string/app_refresh_fab_content_description" />
+        android:contentDescription="@string/cd_refresh" />
 
 </FrameLayout>
