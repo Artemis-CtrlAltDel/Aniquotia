@@ -10,7 +10,7 @@ import com.example.cmo.data.local.QuotesDao
 
 @Database(
     entities = [Details::class, Quote::class],
-    version = 1,
+    version = 3,
     exportSchema = false
 )
 @TypeConverters(Converters::class)

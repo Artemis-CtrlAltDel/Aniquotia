@@ -1,27 +1,21 @@
 package com.example.cmo.other
 
 import android.content.Context
-import android.content.Intent
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
+import android.util.Log
 import androidx.fragment.app.Fragment
-import com.example.cmo.data.local.pojo.Details
+import com.example.cmo.R
 import com.example.cmo.data.local.pojo.Quote
+import com.example.cmo.presentation.ui.activities.MainActivity
 import com.example.cmo.presentation.viewmodel.MainViewModel
+import java.util.Date
 
-fun bookmarkQuote(quote: Quote, viewModel: MainViewModel){
-    quote.isBookmarked = !quote.isBookmarked
-    quote.bookmarkCount += if (quote.isBookmarked) 1 else -1
-
-    when (quote.isBookmarked){
-        true -> viewModel.insertQuote(quote)
-        else -> viewModel.deleteQuote(quote)
-    }
-}
-
-fun replaceFragment(parent: Int, fragment: Fragment){
-    val transaction = fragment.parentFragmentManager.beginTransaction()
-    transaction.replace(parent, fragment)
+fun replaceFragment(activity: MainActivity, fragment: Fragment, title: String? = null, subtitle: String? = null) {
+    val transaction = activity.supportFragmentManager.beginTransaction()
+    title?.let { activity.supportActionBar?.title = it }
+    subtitle?.let { activity.supportActionBar?.subtitle = it }
+    transaction.replace(R.id.frame, fragment).addToBackStack(null)
     transaction.commit()
 }
 
@@ -33,9 +27,14 @@ fun isConnected(context: Context): Boolean {
     if (capabilities != null) {
         if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) ||
             capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) ||
-            capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)) {
+            capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)
+        ) {
             return true
         }
     }
     return false
 }
+
+val formatter = Formatter()
+fun Long.format() = formatter.format(this)
+fun Date.format() = formatter.format(this)

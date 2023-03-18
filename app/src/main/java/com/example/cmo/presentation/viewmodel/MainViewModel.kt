@@ -1,7 +1,6 @@
 package com.example.cmo.presentation.viewmodel
 
 import android.util.Log
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.cmo.data.local.pojo.Quote
@@ -13,19 +12,21 @@ import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.schedulers.Schedulers
 import javax.inject.Inject
 
-@HiltViewModel
-class MainViewModel @Inject constructor(private val repository: QuotesRepository) : ViewModel() {
+private const val TAG = "MainViewModel"
 
-    private val TAG = "MainViewModel"
+@HiltViewModel
+class MainViewModel @Inject constructor(
+    private val repository: QuotesRepository
+) : ViewModel() {
 
     private val compositeDisposable = CompositeDisposable()
 
     /** API **/
-    private val _animeQuotesList = MutableLiveData<Resource<ArrayList<Quote>>>()
-    val animeQuotesList get() = _animeQuotesList
+    var animeQuotesList = MutableLiveData<Resource<ArrayList<Quote>>>()
+        private set
 
-    private val _animeSearchedQuotesList = MutableLiveData<Resource<ArrayList<Quote>>>()
-    val animeSearchedQuotesList get() = _animeSearchedQuotesList
+    var animeSearchedQuotesList = MutableLiveData<Resource<ArrayList<Quote>>>()
+        private set
 
     private val _animeRandomQuote: MutableLiveData<Quote> =
         MutableLiveData(null)
@@ -38,7 +39,7 @@ class MainViewModel @Inject constructor(private val repository: QuotesRepository
             repository.getQuotes()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ result -> _animeQuotesList.value = result })
+                .subscribe({ result -> animeQuotesList.value = result })
                 { error -> Log.e(TAG, "getQuotes: ${error.message}") }
 
         compositeDisposable.add(observable)
@@ -49,7 +50,7 @@ class MainViewModel @Inject constructor(private val repository: QuotesRepository
             repository.getQuotesByCharacter(character)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ result -> _animeSearchedQuotesList.value = result })
+                .subscribe({ result -> animeSearchedQuotesList.value = result })
                 { error -> Log.e(TAG, "getQuotesByCharacter: ${error.message}") }
 
         compositeDisposable.add(observable)
@@ -60,7 +61,7 @@ class MainViewModel @Inject constructor(private val repository: QuotesRepository
             repository.getQuotesByCharacter(anime)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ result -> _animeSearchedQuotesList.value = result })
+                .subscribe({ result -> animeSearchedQuotesList.value = result })
                 { error -> Log.e(TAG, "getQuotesByCharacter: ${error.message}") }
 
         compositeDisposable.add(observable)
@@ -95,18 +96,33 @@ class MainViewModel @Inject constructor(private val repository: QuotesRepository
     }
 
     /** Database **/
-    private var _animeSavedQuotesList: LiveData<List<Quote>> =
-        MutableLiveData(listOf())
-    val animeSavedQuotesList get() = _animeSavedQuotesList
+    val animeSavedQuotesList = repository.getSavedQuotes()
 
-    fun insertQuote(quote: Quote) =
+    private fun insertQuote(quote: Quote) =
         repository.insertQuote(quote)
 
-    fun deleteQuote(quote: Quote) =
+    private fun deleteQuote(quote: Quote) =
         repository.deleteQuote(quote)
 
-    fun getSavedQuotes() {
-        _animeSavedQuotesList = repository.getSavedQuotes()
+
+    /** Shared data **/
+    private var _sharedQuotesList = MutableLiveData<Pair<String, List<Quote>>>()
+    val sharedQuotesList get() = _sharedQuotesList
+
+    fun setCollectionQuotes(collectionQuotes: Pair<String, List<Quote>>) {
+        _sharedQuotesList.value = collectionQuotes
+    }
+
+    /** Actions **/
+    fun bookmarkQuote(quote: Quote) {
+        quote.isBookmarked = !quote.isBookmarked
+        quote.bookmarkCount += if (quote.isBookmarked) 1 else -1
+        quote.savedAtTimestamp = System.currentTimeMillis()
+
+        when (quote.isBookmarked) {
+            true -> insertQuote(quote)
+            else -> deleteQuote(quote)
+        }
     }
 
 

@@ -1,9 +1,13 @@
 package com.example.cmo.data.local.pojo
 
+import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import kotlinx.parcelize.IgnoredOnParcel
+import kotlinx.parcelize.Parcelize
 import java.io.Serializable
 
+@Parcelize
 @Entity(tableName = "quotes_table")
 data class Quote(
 
@@ -15,4 +19,8 @@ data class Quote(
 
     var isBookmarked: Boolean = false,
     var bookmarkCount: Long = 0
-): Serializable
+): Serializable, Parcelable {
+
+    @IgnoredOnParcel
+    var savedAtTimestamp: Long = 0L
+}

@@ -14,7 +14,7 @@ interface QuotesDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertQuote(quote: Quote)
 
-    @Query("SELECT * FROM quotes_table")
+    @Query("SELECT * FROM quotes_table ORDER BY savedAtTimestamp DESC")
     fun getQuotes(): LiveData<List<Quote>>
 
     @Delete

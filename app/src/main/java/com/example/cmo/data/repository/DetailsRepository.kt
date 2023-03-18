@@ -21,7 +21,7 @@ class DetailsRepository @Inject constructor(
 
                     return@map Resource.Success(results)
                 }
-                return@map Resource.Error("Something went wrong")
+                return@map Resource.Error("There is no results")
             }
             .doOnError { Resource.Error<DetailsResponse>("Check your connectivity") }
         }

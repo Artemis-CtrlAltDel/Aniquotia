@@ -24,4 +24,31 @@
     <color name="c_abs_parent_night">#171717</color>
     <color name="c_card_night">#101010</color>
 
+    <color name="c_harmony_light">#f78fb3</color>
+    <color name="c_harmony_bg_light">#33F78FB3</color>
+
+    <color name="c_harmony_night">#45aaf2</color>
+    <color name="c_harmony_bg_night">#332978B0</color>
+
+    <color name="c_accent_light">#ffdd59</color>
+    <color name="c_accent_bg_light">#33FFDD59</color>
+
+    <color name="c_accent_night">#ffdd59</color>
+    <color name="c_accent_bg_night">#33FFDD59</color>
+
+    <color name="c_random_1">#f368e0</color>
+    <color name="c_random_2">#8c7ae6</color>
+    <color name="c_random_3">#e84118</color>
+    <color name="c_random_4">#44bd32</color>
+    <color name="c_random_5">#006266</color>
+    <color name="c_random_6">#34ace0</color>
+    <color name="c_random_7">#ff793f</color>
+    <color name="c_random_8">#ff5252</color>
+    <color name="c_random_9">#33d9b2</color>
+    <color name="c_random_10">#aaa69d</color>
+    <color name="c_random_11">#B53471</color>
+    <color name="c_random_12">#009432</color>
+    <color name="c_random_13">#2f3640</color>
+
+
 </resources>

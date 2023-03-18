@@ -20,7 +20,7 @@ class QuotesRepository @Inject constructor(
                 if (it.isSuccessful) {
                     return@map Resource.Success(it.body()!!)
                 }
-                return@map Resource.Error("Something went wrong")
+                return@map Resource.Error("There is no results")
             }
             .doOnError { Resource.Error<ArrayList<Quote>>("Please check your application's connectivity") }
 
@@ -30,7 +30,7 @@ class QuotesRepository @Inject constructor(
                 if (it.isSuccessful) {
                     return@map Resource.Success(it.body()!!)
                 }
-                return@map Resource.Error("Something went wrong")
+                return@map Resource.Error("There is no results")
             }
             .doOnError { Resource.Error<ArrayList<Quote>>("Please check your application's connectivity") }
 
@@ -40,7 +40,7 @@ class QuotesRepository @Inject constructor(
                 if (it.isSuccessful) {
                     return@map Resource.Success(it.body()!!)
                 }
-                return@map Resource.Error("Something went wrong")
+                return@map Resource.Error("There is no results")
             }
             .doOnError { Resource.Error<ArrayList<Quote>>("Please check your application's connectivity") }
 

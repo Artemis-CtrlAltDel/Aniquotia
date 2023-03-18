@@ -1,9 +1,12 @@
 package com.example.cmo.data.local.pojo
 
+import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import kotlinx.parcelize.Parcelize
 import java.io.Serializable
 
+@Parcelize
 @Entity(tableName = "details_table")
 data class Details(
 
@@ -26,4 +29,4 @@ data class Details(
     val status: String,
 
     val mappings: DetailsMappings
-): Serializable
+): Serializable, Parcelable

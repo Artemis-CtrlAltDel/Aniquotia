@@ -26,7 +26,7 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideAnimeQuotesApi() =
+    fun provideQuotesApi() =
         Retrofit.Builder()
             .baseUrl(Constants.ANIME_QUOTES_BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
@@ -36,7 +36,7 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideAnimeDetailsApi() =
+    fun provideDetailsApi() =
         Retrofit.Builder()
             .baseUrl(Constants.ANIME_DETAILS_BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
@@ -54,21 +54,21 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideAnimeQuotesDao(db: AniquotiaDb) =
+    fun provideQuotesDao(db: AniquotiaDb) =
         db.animeQuoteDao()
 
     @Singleton
     @Provides
-    fun provideAnimeDetailsDao(db: AniquotiaDb) =
+    fun provideDetailsDao(db: AniquotiaDb) =
         db.animeDetailsDao()
 
     @Singleton
     @Provides
-    fun provideAnimeQuotesRepository(api: QuotesApi, dao: QuotesDao) =
+    fun provideQuotesRepository(api: QuotesApi, dao: QuotesDao) =
         QuotesRepository(api, dao)
 
     @Singleton
     @Provides
-    fun provideAnimeDetailsRepository(api: DetailsApi, dao: DetailsDao) =
+    fun provideDetailsRepository(api: DetailsApi, dao: DetailsDao) =
         DetailsRepository(api, dao)
 }

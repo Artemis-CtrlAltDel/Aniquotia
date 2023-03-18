@@ -22,8 +22,7 @@
         <FrameLayout
             android:id="@+id/frame"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_height="wrap_content"
             />
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
@@ -33,6 +32,7 @@
             app:menu="@menu/menu_bottom_navigation"
             android:layout_gravity="bottom|center"
             android:background="?attr/colorSurface"
+            app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior"
             />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

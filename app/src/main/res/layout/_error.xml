@@ -16,6 +16,7 @@
         />
 
     <TextView
+        android:id="@+id/error_message"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/error_subtitle"
@@ -29,10 +30,9 @@
         android:layout_marginTop="@dimen/_10sdp"
         android:text="@string/error_button"
         android:textAllCaps="false"
-        android:textSize="@dimen/_14sdp"
-        android:paddingHorizontal="@dimen/_20sdp"
-        android:paddingVertical="@dimen/_10sdp"
-        android:backgroundTint="?attr/colorPrimarySurface"
+        android:textSize="@dimen/_12sdp"
+        android:paddingHorizontal="@dimen/_11sdp"
+        android:background="?attr/colorPrimarySurface"
         android:textColor="?attr/colorPrimary"
         />
 </LinearLayout>

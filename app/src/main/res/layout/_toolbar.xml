@@ -6,6 +6,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:background="?attr/colorSurface"
     android:paddingHorizontal="@dimen/_10sdp"
+    app:elevation="0dp"
     >
 
     <LinearLayout

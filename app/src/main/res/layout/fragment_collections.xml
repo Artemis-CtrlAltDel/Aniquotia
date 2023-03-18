@@ -2,10 +2,11 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/frame"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:layout_marginTop="?attr/actionBarSize"
-    tools:context=".presentation.ui.fragments.RemoteQuotesFragment">
+    tools:context=".presentation.ui.fragments.CollectionsFragment">
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipe"
@@ -18,56 +19,38 @@
             android:layout_height="match_parent">
 
             <LinearLayout
-                android:paddingHorizontal="@dimen/_11sdp"
                 android:id="@+id/data_wrapper"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
+                android:paddingHorizontal="@dimen/_11sdp"
                 android:paddingTop="@dimen/_45sdp">
 
                 <TextView
                     android:id="@+id/fragment_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:ellipsize="end"
                     android:gravity="start|center"
-                    android:text="@string/fragment_remote_title"
+                    android:maxLines="1"
+                    android:text="@string/fragment_collection_title"
                     android:textColor="?attr/colorOnSurface"
                     android:textSize="@dimen/_22sdp"
-                    android:maxLines="1"
-                    android:ellipsize="end"
                     android:textStyle="bold" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recycler"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    />
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:listitem="@layout/card_collection" />
 
             </LinearLayout>
-
         </androidx.core.widget.NestedScrollView>
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <include
-        android:id="@+id/include_progress"
-        layout="@layout/_progress"/>
-    <include
         android:id="@+id/include_empty"
-        layout="@layout/_empty"/>
-    <include
-        android:id="@+id/include_error"
-        layout="@layout/_error"/>
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_marginEnd="@dimen/_16sdp"
-        android:layout_marginBottom="?attr/actionBarSize"
-        android:backgroundTint="?attr/colorPrimary"
-        android:src="@drawable/ic_randomize"
-        app:tint="?attr/colorOnSurface"
-        android:contentDescription="@string/cd_randomize" />
+        layout="@layout/_empty" />
 
 </FrameLayout>

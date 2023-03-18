@@ -3,13 +3,29 @@
 
     <!-- Content Description -->
     <string name="cd_go_back">Go back</string>
-    <string name="cd_refresh">Refresh</string>
+    <string name="cd_randomize">Refresh</string>
+    <string name="cd_bookmark">Bookmark</string>
+    <string name="cd_see_all">See all</string>
+    <string name="cd_collection">Collection</string>
+    <string name="cd_collection_bg">No purpose</string>
 
     <!-- Fragment Title -->
     <string name="fragment_remote_title">Anime Quotes</string>
     <string name="fragment_saved_title">Favorite Quotes</string>
-    <string name="fragment_search_title">Search Quotes</string>
-    <string name="fragment_collection_title">Collections of Quotes</string>
+    <string name="fragment_search_title">%s %s</string>
+    <string name="fragment_collection_title">Collections for You</string>
+    <string name="fragment_collection_details_title">Quotes for %s</string>
+
+    <!-- Toolbar Title -->
+    <string name="toolbar_remote_title">Remote Quotes</string>
+    <string name="toolbar_search_title">Searched Quotes</string>
+    <string name="toolbar_saved_title">Library of Quotes</string>
+    <string name="toolbar_collection_subtitle">Collections</string>
+    <string name="toolbar_collection_details_subtitle">Collection for %s</string>
+
+    <!-- Cards -->
+    <string name="card_collection_date">%s</string>
+    <string name="card_collection_time">Modified at 一 %s (%s)</string>
 
     <!-- Menu -->
     <string name="menu_remote">Remote</string>
@@ -32,6 +48,23 @@
     <string name="error_title">Ouch !</string>
     <string name="error_subtitle">Looks like there is something wrong</string>
     <string name="error_button">Try again</string>
+
+    <!-- Other Words -->
+    <plurals name="other_quotes">
+        <item quantity="one">%s Quote</item>
+        <item quantity="other">%s Quotes</item>
+    </plurals>
+
+    <plurals name="other_collections">
+        <item quantity="one">%s Collection</item>
+        <item quantity="other">%s Collections</item>
+    </plurals>
+
+    <string name="other_quotes">Quotes</string>
+    <string name="other_see_all"><u>See all</u></string>
+    <string name="other_hey">Hey,</string>
+    <string name="other_we_made_list_collections">We\'ve made a list of collections for you !</string>
+    <string name="other_quote_credits">一 %s</string>
 
 
     <string name="app_fetching_progress_error">Invalid anime/character name, please try again</string>

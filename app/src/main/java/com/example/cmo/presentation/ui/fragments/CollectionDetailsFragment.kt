@@ -1,7 +1,6 @@
 package com.example.cmo.presentation.ui.fragments
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -9,25 +8,22 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.cmo.R
 import com.example.cmo.data.local.pojo.Quote
-import com.example.cmo.databinding.FragmentSavedQuotesBinding
-import com.example.cmo.other.format
+import com.example.cmo.databinding.FragmentCollectionDetailsBinding
 import com.example.cmo.other.replaceFragment
 import com.example.cmo.presentation.ui.activities.MainActivity
 import com.example.cmo.presentation.ui.adapters.QuotesAdapter
 import com.example.cmo.presentation.viewmodel.MainViewModel
-import dagger.hilt.android.AndroidEntryPoint
 
-@AndroidEntryPoint
-class SavedQuotesFragment : Fragment() {
+class CollectionDetailsFragment : Fragment() {
 
-    private var _binding: FragmentSavedQuotesBinding? = null
+    private var _binding: FragmentCollectionDetailsBinding? = null
     private val binding get() = _binding!!
 
     private lateinit var parentActivity: MainActivity
 
     private lateinit var adapter: QuotesAdapter
+
     private lateinit var viewModel: MainViewModel
 
     override fun onCreateView(
@@ -35,7 +31,7 @@ class SavedQuotesFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
-        _binding = FragmentSavedQuotesBinding.inflate(inflater, container, false)
+        _binding = FragmentCollectionDetailsBinding.inflate(layoutInflater, container, false)
 
         parentActivity = requireActivity() as MainActivity
 
@@ -46,9 +42,13 @@ class SavedQuotesFragment : Fragment() {
         bindViews()
         setupRecycler()
         handleActions()
-        getData()
 
         return binding.root
+    }
+
+    override fun onResume() {
+        super.onResume()
+        getData()
     }
 
     override fun onDestroyView() {
@@ -59,9 +59,7 @@ class SavedQuotesFragment : Fragment() {
     private fun bindViews() {
         binding.includeEmpty.emptyWrapper.isVisible = false
 
-        parentActivity.binding.includeToolbar.toolbar.title =
-            getString(R.string.toolbar_saved_title)
-        parentActivity.binding.includeToolbar.goBack.isVisible = false
+        parentActivity.binding.includeToolbar.goBack.isVisible = true
         parentActivity.binding.includeToolbar.search.isVisible = false
     }
 
@@ -69,7 +67,7 @@ class SavedQuotesFragment : Fragment() {
         binding.recycler.adapter = adapter
         binding.recycler.setHasFixedSize(true)
         binding.recycler.layoutManager =
-            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, true)
     }
 
     private fun handleActions() {
@@ -78,25 +76,22 @@ class SavedQuotesFragment : Fragment() {
             getData()
             binding.swipe.isRefreshing = false
         }
-
-        binding.gotoCollections.setOnClickListener {
-            replaceFragment(
-                activity = parentActivity,
-                fragment = CollectionsFragment(),
-                subtitle = getString(R.string.toolbar_collection_subtitle)
-            )
-        }
     }
 
     private fun getData() {
-        viewModel.animeSavedQuotesList.observe(viewLifecycleOwner) {
+        viewModel.sharedQuotesList.observe(viewLifecycleOwner) {
             it?.let {
-                adapter.setItems(ArrayList(it))
-                successViewsSetup(
-                    it.size,
-                    it.groupBy { quote -> quote.anime }.size
-                )
+                adapter.setItems(it.second as ArrayList<Quote>)
+                successViewsSetup(it.first)
             } ?: run { emptyViewsSetup() }
+        }
+
+        parentActivity.binding.includeToolbar.goBack.setOnClickListener {
+            replaceFragment(
+                activity = parentActivity,
+                fragment = CollectionsFragment(),
+                subtitle = "Collections"
+            )
         }
     }
 
@@ -104,27 +99,11 @@ class SavedQuotesFragment : Fragment() {
         binding.includeEmpty.emptyWrapper.isVisible = true
 
         binding.dataWrapper.isVisible = false
-        binding.collectionsWrapper.isVisible = false
     }
 
-    private fun successViewsSetup(quotesCount: Int, collectionsCount: Int) {
+    private fun successViewsSetup(fragmentTitle: String) {
         binding.includeEmpty.emptyWrapper.isVisible = false
 
         binding.dataWrapper.isVisible = true
-        binding.collectionsWrapper.isVisible = true
-
-        binding.quotesCount.text =
-            resources.getQuantityString(
-                R.plurals.other_quotes,
-                quotesCount,
-                quotesCount.toLong().format()
-            )
-        binding.collectionsCount.text =
-            resources.getQuantityString(
-                R.plurals.other_collections,
-                collectionsCount,
-                collectionsCount.toLong().format()
-            )
     }
-
 }

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/star_set"
+
+    android:alpha=".5"
+
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_star_active"
+        android:rotation="45"
+
+        app:tint="@color/c_random_6"
+        />
+    <ImageView
+        android:rotation="-90"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_moon"
+        android:scaleX="3"
+        android:scaleY="3"
+
+        android:layout_marginTop="12dp"
+        android:layout_marginStart="12dp"
+        app:tint="@color/c_accent_light"
+        />
+
+    <FrameLayout
+        android:id="@+id/small_sets"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <FrameLayout
+            android:id="@+id/small_set_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_star_inactive"
+                android:rotation="-20"
+                android:scaleX="1"
+                android:scaleY="1"
+                android:layout_marginTop="55dp"
+                android:layout_marginStart="10dp"
+
+                app:tint="?attr/colorOnSurface"
+                />
+        </FrameLayout>
+        <FrameLayout
+            android:rotation="45"
+            android:id="@+id/small_set_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            >
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_star_inactive"
+                android:rotation="-20"
+                android:scaleX=".5"
+                android:scaleY=".5"
+                android:layout_marginTop="55dp"
+                android:layout_marginStart="10dp"
+
+                app:tint="?attr/colorOnSurface"
+                />
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_star_inactive"
+                android:rotation="-35"
+                android:scaleX=".6"
+                android:scaleY=".6"
+                android:layout_marginTop="40dp"
+                android:layout_marginStart="5dp"
+
+                app:tint="?attr/colorOnSurface"
+                />
+        </FrameLayout>
+    </FrameLayout>
+
+</FrameLayout>

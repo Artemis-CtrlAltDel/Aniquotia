@@ -8,6 +8,8 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import com.example.cmo.R
 import com.example.cmo.databinding.ActivityMainBinding
+import com.example.cmo.other.replaceFragment
+import com.example.cmo.presentation.ui.fragments.CollectionDetailsFragment
 import com.example.cmo.presentation.ui.fragments.RemoteQuotesFragment
 import com.example.cmo.presentation.ui.fragments.SavedQuotesFragment
 import dagger.hilt.android.AndroidEntryPoint
@@ -15,7 +17,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityMainBinding
+    lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,7 +25,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
 
         bindViews()
-        replaceFragment(RemoteQuotesFragment(), getString(R.string.fragment_remote_title))
+        replaceFragment(this, RemoteQuotesFragment(), getString(R.string.fragment_remote_title))
         handleActions()
 
         setContentView(binding.root)
@@ -38,7 +40,6 @@ class MainActivity : AppCompatActivity() {
         )
 
         setSupportActionBar(binding.includeToolbar.toolbar)
-        supportActionBar?.subtitle = ""
 
         binding.bottomNavigation.selectedItemId = R.id.menu_remote
         binding.includeToolbar.goBack.isVisible = false
@@ -48,22 +49,20 @@ class MainActivity : AppCompatActivity() {
         binding.bottomNavigation.setOnItemSelectedListener {
             when (it.itemId) {
                 R.id.menu_remote -> replaceFragment(
+                    this,
                     RemoteQuotesFragment(),
-                    getString(R.string.fragment_remote_title)
+                    getString(R.string.fragment_remote_title),
+                    ""
                 )
                 R.id.menu_bookmark -> replaceFragment(
+                    this,
                     SavedQuotesFragment(),
-                    getString(R.string.fragment_saved_title)
+                    getString(R.string.fragment_saved_title),
+                    ""
                 )
             }
             true
         }
     }
 
-    private fun replaceFragment(fragment: Fragment, title: String) {
-        val transaction = supportFragmentManager.beginTransaction()
-        supportActionBar?.title = title
-        transaction.replace(R.id.frame, fragment)
-        transaction.commit()
-    }
 }

@@ -1,6 +1,6 @@
 package com.example.cmo.presentation.ui.adapters
 
-interface OnQuoteClick {
+fun interface OnQuoteClick {
 
     fun onBookmarkClick(position: Int)
 }
